@@ -1,6 +1,7 @@
 import React from 'react'
 import { LogOut, X } from 'lucide-react'
-import user from '../../public/user.png'
+import userImage from '../assets/user.png'
+
 import { useAuth } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
@@ -63,7 +64,7 @@ function Sidebar() {
       <div className="p-1 border-t border-gray-600">
         <div className="flex  items-center gap-2 cursor-pointer my-3">
           <img
-            src="/user.png"
+            src={userImage}
             alt="user profile"
             className="rounded-full w-8 h-8"
           />

@@ -1,6 +1,6 @@
 import React,{useState,useEffect,useRef} from 'react'
 import { ArrowUp, Bot, Divide, Globe, Paperclip } from 'lucide-react'
-import logo from '../../public/logo.png'
+import logo from '../assets/logo.png'
 import axios from 'axios'
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -37,45 +37,58 @@ function promt() {
   }, [promt, loading]);
   
   
+const handleSend = async () => {
+  const trimmed = InputValue.trim();
+  if (!trimmed) return;
 
-  const handleSend = async () => {
-    const trimmed = InputValue.trim();
-    if (!trimmed) return;
-    setInputValue("");
-    setTypeMessage(trimmed);
-    setLoading(true);
-  
+  setInputValue("");
+  setTypeMessage(trimmed);
+  setLoading(true);
+
   try {
-   const token = localStorage.getItem("token");
-   const {data}= await axios.post("http://localhost:3000/api/v1/deepseekai/promt", { content: trimmed },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          withCredentials: true,
-        }
-      );
-       setPromt((prev) => [
-        ...prev,
-        { role: "user", content: trimmed },
-        { role: "assistant", content: data.reply },
-      ]);
-    
-  } catch (error) {
-      console.error("API Error:", error);
-      setPromt((prev) => [
-        ...prev,
-        { role: "user", content: trimmed },
-        {
-          role: "assistant",
-          content: "❌ Something went wrong with the AI response.",
-        },
-      ]);
-    } finally {
-      setLoading(false);
-      setTypeMessage(null);
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("🔒 No authentication token found. Please log in again.");
     }
-  };
+
+    const { data } = await axios.post(
+      "http://localhost:3000/api/v1/deepseekai/promt",
+      { content: trimmed },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true, // Only needed if using cookies (can remove if not)
+      }
+    );
+
+    setPromt((prev) => [
+      ...prev,
+      { role: "user", content: trimmed },
+      { role: "assistant", content: data.reply },
+    ]);
+  } catch (error) {
+    console.error("API Error:", error);
+
+    let errorMessage = "❌ Something went wrong with the AI response.";
+
+    if (error.response?.status === 401) {
+      errorMessage = "❌ Unauthorized. Please log in again.";
+    } else if (error.message) {
+      errorMessage = `❌ ${error.message}`;
+    }
+
+    setPromt((prev) => [
+      ...prev,
+      { role: "user", content: trimmed },
+      { role: "assistant", content: errorMessage },
+    ]);
+  } finally {
+    setLoading(false);
+    setTypeMessage(null);
+  }
+};
 
   
   const handleKeyDown = (e) => {
