@@ -11,6 +11,8 @@ const app = express()
 const port = process.env.PORT || 4000;
 const MONGO_URL=process.env.MONGO_ATLAS_URI;
 
+
+
 //DB connection
 mongoose.connect(MONGO_URL).then(()=>
     console.log("connected to mongoDB Atlas"))

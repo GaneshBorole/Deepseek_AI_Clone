@@ -61,7 +61,7 @@ function Sidebar() {
       </div>
 
       {/* Footer */}
-      <div className="p-1 border-t border-gray-600">
+      <div className="p-1 mt-8 border-t border-gray-600">
         <div className="flex  items-center gap-2 cursor-pointer my-3">
           <img
             src={userImage}
