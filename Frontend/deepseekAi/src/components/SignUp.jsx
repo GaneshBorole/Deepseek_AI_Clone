@@ -29,7 +29,7 @@ function SignUp() {
     setError("");
     try {
       const { data } = await axios.post(
-        "https://deepseek-ai-clone-1.onrender.com/api/v1/user/signup",
+        "http://localhost:3000/api/v1/user/signup",
         {
           firstName: formData.firstName,
           lastName: formData.lastName,
