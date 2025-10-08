@@ -53,7 +53,7 @@ const handleSend = async () => {
     }
 
     const { data } = await axios.post(
-      "http://localhost:3000/api/v1/deepseekai/promt",
+      "https://deepseek-ai-clone-1.onrender.com/api/v1/deepseekai/promt",
       { content: trimmed },
       {
         headers: {
