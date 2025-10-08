@@ -1,6 +1,6 @@
 import React from 'react'
 import Sidebar from "./Sidebar.jsx"
-import Promt from './promt.jsx'
+import Promt from './Promt.jsx'
 
 function Home() {
   return (
